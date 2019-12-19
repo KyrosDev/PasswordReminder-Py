@@ -15,7 +15,7 @@ class JsonLoader:
         #Write settings file
         with open(self.settings, "w") as settingsFile:
             data = {
-            "project": "PasswordRemainder",
+            "project": "PasswordReminder",
             "author": "KyrosDesign",
             "copyright": "2019-2020",
             "program": {
@@ -37,14 +37,14 @@ class JsonLoader:
                     "104": "\nPin setted correctly."
                 }
                 },
-                "startMessage": "- Hello from PasswordRemainder.\n--> Digit '/start' to init\n--> Digit /exit to end the exectuion.",
+                "startMessage": "- Hello from PasswordReminder.\n--> Digit '/start' to init\n--> Digit /exit to end the exectuion.",
                 "pinInsert": "Before start type a name and a pin. (Pin = only integers password)",
                 "credentialSuccesSetted": "\nNice! Now let's start",
                 "getStarted": "\n--- Type '/register' to register new credentials for a determined service\n--- Type '/services' to get password or email from determined registred service\n--- Type '/exit' to cancel execution of the program.",
                 "startRegister": "\n---> Good. Insert required credentials in input fields",
                 "getPin": "\n---> Insert pin to check your identity.",
                 "getServiceMethod": "\n---> Now select one of options with his index.\n\n-- [1] - Get password from service.\n-- [2] - Get password from email.\n-- [3] - Get all registrated services accounts.",
-                "exitMessage": "Have a good day ;D. Remaind the pin!!!"
+                "exitMessage": "Have a good day ;D. Remind the pin!!!"
             },
             "user": {
                 "registred": "false"
