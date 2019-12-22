@@ -4,13 +4,15 @@
 
 """
 
-from Models.JsonLoader import JsonLoader #My library
+from Utils.JsonLoader import JsonLoader #My library
+from Utils.Secure import Secure #Encryp and Decrypt data file
 import os #Os library
 import json #Json library
 import sys #Sys library
 import getpass #Library to hide line
 
-localPasswordsPath = "/tmp/psr"#Path of this file
+localPasswordsPath = "/tmp/psr" #Path of this file
+secure = Secure(localPasswordsPath) #Send path to Secure Class
 
 try:
     os.chdir("/tmp/") #Change directory
@@ -31,9 +33,9 @@ jsonLoader = JsonLoader(localPasswordsPath)
 #If settings.json contain name key set the value at username var
 try:
     username = jsonLoader.getNameFromJson() #Use getNameFromJson to set the name
-#If settings.json don't contain name key don't do nothing
+#If settings.json don't contain name key do nothing
 except:
-    pass #Don't do nothing
+    pass #Do nothing
 
 #Get services function
 def getService():
@@ -128,7 +130,7 @@ def getService():
                         #For every element in element
                         for k in data[2][i]:
                             #Print pattern
-                            print(f"- {1+i})Service: {list(data[2][i].keys())[0]},Email: {data[2][i][k][0]}, Password: {data[2][i][k][1]}") #Message pattern
+                            print(f"- {1+i})Service: {list(data[2][i].keys())[0]}, Email: {data[2][i][k][0]}, Password: {secure.decryptData(data[2][i][k][1])}") #Message pattern
                     print("\n#----------------------------------------#")
             
             else:

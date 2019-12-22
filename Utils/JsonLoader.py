@@ -1,6 +1,8 @@
 #Import main library
 import json
 import os
+from Utils.Secure import Secure
+
 
 class JsonLoader:
     #Init class JsonLoader
@@ -11,51 +13,54 @@ class JsonLoader:
         self.dir = directory #Directory of program
         self.settings = f'{self.dir}/{self.file}' #Directory of settings file
         self.dataJson = f'{self.dir}/{self.data}' #Directory of data file
+        self.secure = Secure(f"{self.dir}") #Send directory at Class
 
-        #Write settings file
-        with open(self.settings, "w") as settingsFile:
-            data = {
-            "project": "PasswordRemainder",
-            "author": "KyrosDesign",
-            "copyright": "2019-2020",
-            "program": {
-                "firstExecution": "true"
-            },
-            "messages": {
-                "returns": {
-                "errors": {
-                    "401": "\nEmail already registrated at this service. Retry.",
-                    "402": "\nPin invalid or incorrect. Retry.",
-                    "403": "\nYou haven't registrated an account on this program.",
-                    "404": "\nThat email isn't registrated at this service. Retry.",
-                    "406": "\nNo accounts registrated. Start now with register."
+        if self.file not in os.listdir(self.dir):
+            #Write settings file
+            with open(self.settings, "w") as settingsFile:
+                data = {
+                "project": "PasswordRemainder",
+                "author": "KyrosDesign",
+                "copyright": "2019-2020",
+                "program": {
+                    "firstExecution": "true"
                 },
-                "corrects": {
-                    "100": "\nPin is correct.",
-                    "101": "\nService added correctly.",
-                    "102": "\nService Founded.",
-                    "104": "\nPin setted correctly."
+                "messages": {
+                    "returns": {
+                    "errors": {
+                        "401": "\nEmail already registrated at this service. Retry.",
+                        "402": "\nPin invalid or incorrect. Retry.",
+                        "403": "\nYou haven't registrated an account on this program.",
+                        "404": "\nThat email isn't registrated at this service. Retry.",
+                        "406": "\nNo accounts registrated. Start now with register."
+                    },
+                    "corrects": {
+                        "100": "\nPin is correct.",
+                        "101": "\nService added correctly.",
+                        "102": "\nService Founded.",
+                        "104": "\nPin setted correctly."
+                    }
+                    },
+                    "startMessage": "- Hello from PasswordRemainder.\n--> Digit '/start' to init\n--> Digit /exit to end the exectuion.",
+                    "pinInsert": "Before start type a name and a pin. (Pin = only integers password)",
+                    "credentialSuccesSetted": "\nNice! Now let's start",
+                    "getStarted": "\n--- Type '/register' to register new credentials for a determined service\n--- Type '/services' to get password or email from determined registred service\n--- Type '/exit' to cancel execution of the program.",
+                    "startRegister": "\n---> Good. Insert required credentials in input fields",
+                    "getPin": "\n---> Insert pin to check your identity.",
+                    "getServiceMethod": "\n---> Now select one of options with his index.\n\n-- [1] - Get password from service.\n-- [2] - Get password from email.\n-- [3] - Get all registrated services accounts.",
+                    "exitMessage": "Have a good day ;D. Remaind the pin!!!"
+                },
+                "user": {
+                    "registred": "false"
                 }
-                },
-                "startMessage": "- Hello from PasswordRemainder.\n--> Digit '/start' to init\n--> Digit /exit to end the exectuion.",
-                "pinInsert": "Before start type a name and a pin. (Pin = only integers password)",
-                "credentialSuccesSetted": "\nNice! Now let's start",
-                "getStarted": "\n--- Type '/register' to register new credentials for a determined service\n--- Type '/services' to get password or email from determined registred service\n--- Type '/exit' to cancel execution of the program.",
-                "startRegister": "\n---> Good. Insert required credentials in input fields",
-                "getPin": "\n---> Insert pin to check your identity.",
-                "getServiceMethod": "\n---> Now select one of options with his index.\n\n-- [1] - Get password from service.\n-- [2] - Get password from email.\n-- [3] - Get all registrated services accounts.",
-                "exitMessage": "Have a good day ;D. Remaind the pin!!!"
-            },
-            "user": {
-                "registred": "false"
-            }
-            }
-            json.dump(data, settingsFile)
+                }
+                json.dump(data, settingsFile)
 
-        #Write data file
-        with open(self.dataJson, "w") as dataFile:
-            data = []
-            json.dump(data, dataFile)
+        if self.data not in os.listdir(self.dir):
+            #Write data file
+            with open(self.dataJson, "w") as dataFile:
+                data = []
+                json.dump(data, dataFile)
         
         #Get pin value from settings file as userPin
         with open(self.settings) as userPin:
@@ -134,6 +139,8 @@ class JsonLoader:
     #Create schema data in json file
     def setService(self, service, email, password):
 
+        password = self.secure.encrpytData(password) #Encrypt password
+
         isServiceExistent = False
 
         #Open file to load the json
@@ -200,7 +207,7 @@ class JsonLoader:
                         try:
                             #Append service dict if it is founded in file
                             if jsonData[i][service]:
-                                moreServices.append(jsonData[i][service])
+                                moreServices.append([jsonData[i][service][0], self.secure.decryptData(jsonData[i][service][1])]) #Append entire service
                         except KeyError:
                             continue #Don't do nothing and continue
 
@@ -212,16 +219,22 @@ class JsonLoader:
                             for k in jsonData[i]:
                                 #If line K in pos 0 is email append all line
                                 if jsonData[i][k][0] == email:
-                                    moreServices.append(jsonData[i]) #Append line
+                                    #Take the name of the service
+                                    for t in jsonData[i]:
+                                        serviceFromEmail = t #Name of service
+                                    moreServices.append({t: [jsonData[i][k][0], self.secure.decryptData(jsonData[i][k][1])]})#Append line
                         except KeyError:
                             continue #Don't do nothing and continue
 
                     #If method is equals to all return all datas
                     if method == "all":
                         moreServices.append(jsonData[i]) #Append all data to return array
+
+                        
+
                 
                 #Check if list of services is grather equals 0
                 if len(moreServices) == 0:
-                    return 403 #Return No Account at this service Error
+                    return [403] #Return No Account at this service Error
                 else:
                     return [102, 105, moreServices] #Return 102 = Service Founded, 105 idk but it works, And list of services
