@@ -206,7 +206,7 @@ if startExecution == "start" or startExecution == "/start":
 
     #Check if jsonLoader.checkFirstExec return True... this mean it's first execution on the pc
     if jsonLoader.checkFristExec() == "true":
-        print("\n" + jsonLoader.takeDataFromJson('messages','pinInsert')) #Print message to insert a name and a pin
+        print("\n" + jsonLoader.takeDataFromJson('messSiages','pinInsert')) #Print message to insert a name and a pin
         name = str(input(inputTemplate + "Name: ")) #Name Input
         pin = int(input(inputTemplate + "Pin: ")) #Pin input
         jsonLoader.setPin(pin) #Set pin with pin input
