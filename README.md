@@ -11,4 +11,6 @@ Start to use it following these steps:
 - <code>python3 -m pip install -r requirements.txt</code>
 - <code>python3 main.py</code>
 
-<h1>Thank you!</h1>
+<h1>Next Update</h1>
+<p>
+a next update will be compatibility with windows. For the uninitiated this program only works on linux.</p>
