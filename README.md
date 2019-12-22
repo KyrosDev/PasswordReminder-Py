@@ -8,7 +8,7 @@ Start to use it following these steps:
 - Open terminal and type:
 - <code>git@github.com:KyrosDev/PasswordReminder-Py.git</code>
 - <code>cd PasswordReminder-Py</code>
-- <code>python3 -m pip install requirements.txt</code>
+- <code>python3 -m pip install -r requirements.txt</code>
 - <code>python3 main.py</code>
 
 <h1>Thank you!</h1>
