@@ -13,4 +13,4 @@ Start to use it following these steps:
 
 <h1>Next Update</h1>
 <p>
-a next update will be compatibility with windows. For the uninitiated this program only works on linux.</p>
+A next update will be compatibility with windows. For the uninitiated this program only works on linux.</p>
