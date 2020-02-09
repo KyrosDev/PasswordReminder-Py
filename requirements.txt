@@ -1,2 +1,6 @@
+<<<<<<< HEAD
 Fernet
 cryptography
+=======
+cryptography
+>>>>>>> 97603ee3848d21f753b65204137370b6e1b37a8a
