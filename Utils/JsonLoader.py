@@ -13,10 +13,7 @@ class JsonLoader:
         self.dir = directory #Directory of program
         self.settings = f'{self.dir}/{self.file}' #Directory of settings file
         self.dataJson = f'{self.dir}/{self.data}' #Directory of data file
-<<<<<<< HEAD:Utils/JsonLoader.py
         self.secure = Secure(f"{self.dir}") #Send directory at Class
-=======
->>>>>>> e5f116eaad1a47a48032fdb81c3e61428178dc18:Models/JsonLoader.py
 
         if self.file not in os.listdir(self.dir):
             #Write settings file
